@@ -50,8 +50,6 @@ html,body{overflow-x:hidden}.cd{box-shadow:0 1px 4px #2a2d4a14}.top,.bn{display:
 @media print{@page{size:A4;margin:8mm}html,body{background:#fff!important}#app,#ts{display:none!important}#md{position:static!important;display:block!important;background:none!important;padding:0!important;overflow:visible!important}#mb{padding:0!important;background:none!important;max-width:none!important;min-height:0!important;border-radius:0!important}#mb>*:not(.invw){display:none!important}body *{visibility:visible!important}.invw{height:auto!important;overflow:visible!important}.inv{transform:none!important;width:100%!important;position:static!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 .inv .stb{border-bottom:1px solid #222}.inv .stt td{background:var(--hb,#ddd);font-weight:700;border:0;padding:5px 6px}.inv .kl>span:first-child{min-width:96px}.inv .hd2>img{max-width:90px;object-fit:contain}
 .fb{position:relative;display:inline-block;overflow:hidden;padding:8px 14px;border:1px solid var(--bd);border-radius:8px;font-weight:600;background:var(--bg);color:var(--tx);cursor:pointer;font-size:14px;line-height:1.3}.fi{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;cursor:pointer;padding:0;border:0;font-size:40px}
-.inv{display:flex;flex-direction:column;min-height:1078px}.inv .itw{flex:1 1 auto}
-@media print{.inv{min-height:277mm!important}}
 </style></head><body><div id="app"></div><div id="md"><div id="mb"></div></div>
 <script>
 const $=s=>document.querySelector(s),uid=()=>Math.random().toString(36).slice(2,9),inr=n=>'₹'+(+n||0).toLocaleString('en-IN',{maximumFractionDigits:2}),e=s=>String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'),today=()=>new Date().toISOString().slice(0,10);
@@ -279,16 +277,5 @@ addEventListener('popstate',()=>{if(IGN){IGN=0;NS.length=PD;nq();return}const t=
 addEventListener('touchstart',e=>{const t=e.touches[0],g=e.target&&e.target.closest&&e.target.closest('canvas,input,textarea,select');TS=(!g&&t.clientX<50)?[t.clientX,t.clientY]:null},{passive:true});
 addEventListener('touchend',e=>{if(!TS)return;const t=e.changedTouches[0],dx=t.clientX-TS[0],dy=Math.abs(t.clientY-TS[1]);TS=null;if(dx>80&&dy<60&&NS.length)history.back()},{passive:true});
 addEventListener('keydown',e=>{if(e.key=='Escape'&&NS.length)history.back()})}
-
-/* ===== PDF dialog: reliable download / share / print-to-PDF paths ===== */
-var PU=null;
-const WV=/; wv\)|WebView|Appilix/i.test(navigator.userAgent);
-const rdURL=b=>new Promise(ok=>{const r=new FileReader;r.onload=()=>ok(r.result);r.onerror=()=>ok('');r.readAsDataURL(b)});
-function pvPrint(id){pv(id);setTimeout(()=>window.print(),500)}
-async function pdfShare(id){const b=PB[id];if(!b)return toast('Open the invoice and try again.');const n=pn(id),f=new File([b],n,{type:'application/pdf'});try{await navigator.share({files:[f],title:n,text:sm(id)})}catch(x){if(!x||x.name!='AbortError')toast('Sharing failed. Use Download PDF instead.')}}
-async function pdfDlg(id,auto){const b=await pdfOf(id);if(!b)return;const n=pn(id);if(PU){try{URL.revokeObjectURL(PU)}catch(x){}PU=null}const u=WV?await rdURL(b):(PU=URL.createObjectURL(b)),f=new File([b],n,{type:'application/pdf'}),cs=!!(navigator.canShare&&navigator.canShare({files:[f]}));if(auto&&!WV)await dl(n,b);
-M(`<h3>PDF ready</h3><p class=mu>${e(n)} · ${Math.max(1,Math.round(b.size/1024))} KB</p><div style="display:grid;gap:10px;margin:12px 0"><a class=b href="${u}" download="${e(n)}" style="text-align:center;text-decoration:none;display:block">⬇ Download PDF</a>${cs?`<button class=b style="background:#148f7c" onclick="pdfShare('${id}')">↗ Share PDF</button>`:''}${WV?'':`<button class=b2 onclick="window.open(PU,'_blank')">Open PDF</button>`}<button class=b2 onclick="pvPrint('${id}')">🖨 Save as PDF via Print</button></div><p class=mu>${cs?'':'Sharing files is not supported in this app, so download or save the PDF and attach it in WhatsApp. '}If nothing downloads, use “Save as PDF via Print”.</p><div class=r><button class=b2 onclick=X()>Close</button></div>`)}
-function dn(id){return pdfDlg(id,true)}
-async function sh(id){const b=await pdfOf(id);if(!b)return;const n=pn(id),f=new File([b],n,{type:'application/pdf'});if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:n,text:sm(id)});return}catch(x){if(x&&x.name=='AbortError')return}}return pdfDlg(id,false)}
 R();
 </script></body></html>
